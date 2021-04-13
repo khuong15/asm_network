@@ -1,0 +1,27 @@
+#include <unistd.h>
+#include <sys/types.h>
+#include <stdio.h>
+
+int mynum = 0; /* A global variable*/
+int main(void){
+	pid_t childPID; int i;
+	childPID = fork();
+	if (childPID == 0){
+    	printf("Child process ID: %d\n",getpid());
+    	for (i = 0; i< 4; ++i){
+        	mynum = i;
+        	sleep(1); /*5 times each*/
+        	printf("CHILD%d\n", mynum);
+    	}
+	} else if(childPID > 0){
+    	printf("Parent process ID: %d\n",getpid());
+    	for (i = 0; i < 4; ++i){
+        	sleep(1); /*5 times each*/
+        	printf("PARENT%d\n", mynum);
+    	}
+	}else{
+    	printf("\n Fork failed,quitting!!!!!!\n");
+    	return 1;
+	}
+	return 0;
+}

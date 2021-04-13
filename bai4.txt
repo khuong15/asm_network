@@ -1,0 +1,35 @@
+#include <pthread.h>
+#include <stdio.h>
+#include <stdlib.h>
+#define NUM_THREADS 	5
+ 
+void *PrintHello(void *threadid)
+{
+   long tid;
+   tid = (long)threadid;
+   printf("Hello World! Thread #%ld o day !!!\n", tid);
+   pthread_exit(NULL);
+}
+ 
+int main(int argc, char *argv[])
+{
+   pthread_t threads[NUM_THREADS];
+   int rc;
+   long tId;
+ 
+   for(tId = 0; tId < NUM_THREADS; tId++){
+ 	printf(" Ham main() : Thread Main : Tao...thread moi: %ld\n", tId);
+ 	rc = pthread_create(
+                    	&threads[tId],
+                    	NULL,
+                    	PrintHello,
+                    	(void *)tId);
+ 	if (rc){
+   	printf("ERROR; loi khi chay pthread_create(), ma loi: %d\n", rc);
+   	exit(-1);
+   	}
+ 	}
+ 
+   /* Last thing that main() should do */
+   pthread_exit(NULL);
+}
